@@ -6,6 +6,7 @@ CLI PDF Viewer
 Usage: $0 [option] path/to/pdf
 Available options:
   -h, --help                     - Displays this message and exits
+  -hl, --html                    - Create HTML file instead of text
   -p, --pager                    - Use alternative pager
   -w, --wrap                     - Wraps text, if text format is used
 EOF
@@ -25,6 +26,16 @@ if [ ! -d "$cachedir" ]; then
   echo "This directory contains all parsed PDF files for future usage!"
 fi
 
+function html() {
+  if [ ! -f "$cachedir/$parsedfile.html" ]; then
+    mutool draw -F html "$pdfile" > "$cachedir/$parsedfile.html"
+    echo "$parsedfile.html created at $cachedir!"
+  else
+    echo "$parsedfile.html already exists!"
+    echo "Use $0 -f to view it!"
+  fi
+}
+
 while [[ "$1" != "" ]]; do
   case "$1" in
     -w | --wrap)
@@ -34,6 +45,13 @@ while [[ "$1" != "" ]]; do
     -h | --help)
       help
       exit 0
+      ;;
+    -hl | --html)
+      shift
+      pdfile="$1"
+      parsedfile=$(basename "$pdfile" .pdf)
+      html
+      exit
       ;;
     -p | --pager)
       shift
@@ -55,6 +73,15 @@ if [[ -z "$pdfile" ]]; then
   help
   exit 1
 fi
+
+html_view=("lynx" "w3m")
+
+for is_html in "${html_view[@]}"; do
+  if [ "$pager" = "$is_html" ]; then
+    "$pager" "$cachedir/$parsedfile.html"
+    exit
+  fi
+done
 
 if [ "$wrap" = true ]; then
   if [ -f "$cachedir/$parsedfile.txt" ]; then
