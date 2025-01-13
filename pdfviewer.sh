@@ -5,6 +5,7 @@ function help() {
 CLI PDF Viewer
 Usage: $0 [option] path/to/pdf
 Available options:
+  -f, --fzf                      - Fuzzy finder parsed files
   -h, --help                     - Displays this message and exits
   -hl, --html                    - Create HTML file instead of text
   -p, --pager                    - Use alternative pager
@@ -36,8 +37,20 @@ function html() {
   fi
 }
 
+function fzf_root() {
+  parsedfile=$(find "$cachedir" -type f | fzf)
+  if [[ $parsedfile == *.html ]]; then
+    pager="lynx"
+  fi
+  "$pager" "$parsedfile"
+}
+
 while [[ "$1" != "" ]]; do
   case "$1" in
+    -f | --fzf)
+      fzf_root
+      exit
+      ;;
     -w | --wrap)
       wrap=true
       shift
