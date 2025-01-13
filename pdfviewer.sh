@@ -5,11 +5,11 @@ function help() {
 CLI PDF Viewer
 Usage: $0 [option] path/to/pdf
 Available options:
+  -e, --expand                   - Expand text, if text format is used
   -f, --fzf                      - Fuzzy finder parsed files
   -h, --help                     - Displays this message and exits
   -hl, --html                    - Create HTML file instead of text
   -p, --pager                    - Use alternative pager
-  -w, --wrap                     - Wraps text, if text format is used
 EOF
   exit 0
 }
