@@ -5,11 +5,12 @@ function help() {
 CLI PDF Viewer
 Usage: $0 [option] path/to/pdf
 Available options:
-  -e, --expand                   - Expand text, if text format is used
-  -f, --fzf                      - Fuzzy finder parsed files
-  -h, --help                     - Displays this message and exits
-  -hl, --html                    - Create HTML file instead of text
-  -p, --pager                    - Use alternative pager
+  -e, --expand [-p]                   - Expand text, if text format is used
+  -f, --fzf                           - Fuzzy finder parsed files
+  -h, --help                          - Displays this message and exits
+  -hl, --html                         - Create HTML file instead of text
+  -p, --pager [arg]                   - Use alternative pager
+  -v, --voice [profile]               - Use RHVoice as TTS
 EOF
   exit 0
 }
@@ -42,13 +43,24 @@ function fzf_root() {
   if [[ $parsedfile == *.html ]]; then
     pager="lynx"
   fi
-  "$pager" "$parsedfile"
+}
+
+function voice() {
+  cat "$parsedfile" | RHVoice-test -p "$profile" -q 200%
+  exit
 }
 
 while [[ "$1" != "" ]]; do
   case "$1" in
+    -v | --voice)
+      profile="$2"
+      fzf_root
+      voice
+      exit
+      ;;
     -f | --fzf)
       fzf_root
+      "$pager" "$parsedfile"
       exit
       ;;
     -w | --wrap)

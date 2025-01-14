@@ -7,13 +7,18 @@ It uses mutool under the hood to convert PDF files to text or HTML files, that c
 ## Requirements
 
 - mutool
-- fzf (for searching the cache folder)
-- lynx or w3m (for viewing HTML files)
 - Any viewer of choice
+
+### Optional
+
+- RHVoice
+- lynx or w3m
+- fzf (for searching the cache folder)
 
 ## Features
 
 - Convert PDF files to text or HTML files and save to cache folder
+- Hear PDF using RHVoice TTS
 - Search cache folder using fzf
 - Expand lines, if they don't fit the whole screen
 
@@ -25,11 +30,12 @@ The first time you use `pdfviewer.sh` the cache folder will be created at `$HOME
 CLI PDF Viewer
 Usage: $0 [option] path/to/pdf
 Available options:
-  -e, --expand                   - Expand text, if text format is used
-  -f, --fzf                      - Fuzzy finder parsed files
-  -h, --help                     - Displays this message and exits
-  -hl, --html                    - Create HTML file instead of text
-  -p, --pager                    - Use alternative pager
+  -e, --expand [-p]                   - Expand text, if text format is used
+  -f, --fzf                           - Fuzzy finder parsed files
+  -h, --help                          - Displays this message and exits
+  -hl, --html                         - Create HTML file instead of text
+  -p, --pager [arg]                   - Use alternative pager
+  -v, --voice [profile]               - Use RHVoice as TTS
 ```
 
 **Examples:**
